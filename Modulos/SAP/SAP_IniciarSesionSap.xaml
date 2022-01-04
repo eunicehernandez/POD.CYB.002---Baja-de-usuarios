@@ -6,11 +6,12 @@
     <x:Property Name="in_Contraseña" Type="InArgument(x:String)" />
     <x:Property Name="in_Lenguaje" Type="InArgument(x:String)" />
     <x:Property Name="in_ToInicioSap" Type="InArgument(x:String)" />
+    <x:Property Name="in_PathSAP" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>787,1869</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>787,2000</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>SAP_IniciarSesionSap_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="56">
@@ -69,9 +70,15 @@
       <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
       <AssemblyReference>System.Memory</AssemblyReference>
       <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Módulo que inicia sesión en el ambiente que le indiquen por el argumento" DisplayName="SAP_IniciarSesionSap" sap:VirtualizedContainerService.HintSize="797,1804" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Módulo que inicia sesión en el ambiente que le indiquen por el argumento" DisplayName="SAP_IniciarSesionSap" sap:VirtualizedContainerService.HintSize="797,1935" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Boolean" Name="ExisteSAP" />
       <Variable x:TypeArguments="x:Boolean" Name="AccesoDenegado" />
@@ -82,6 +89,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="755,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;En ejecución para Iniciar Sesión en SAP&quot;]" />
     <ui:UiElementExists DisplayName="Element Exists 'saplogon.exe SAP'" Exists="[ExisteSAP]" sap:VirtualizedContainerService.HintSize="755,106" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
       <ui:UiElementExists.Target>
         <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="8f2824b3-ae4c-418b-bcc8-0ba2ad7b57e9" InformativeScreenshot="56c61fa8d6bd1e13c1bab64722950885" Selector="&lt;wnd app='saplogon.exe' cls='#32770' title='SAP Logon 740' /&gt;">
@@ -108,7 +116,7 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ucas:Logon Window="{x:Null}" ConnectionName="[in_NombreConexion]" DelayBetweenRetries="500" DisplayName="SAP Logon" sap:VirtualizedContainerService.HintSize="334,137" sap2010:WorkflowViewState.IdRef="Logon_1" Retries="5" SAPLogonPath="C:\Program Files (x86)\SAP\FrontEnd\SAPgui\saplogon.exe" />
+          <ucas:Logon Window="{x:Null}" ConnectionName="[in_NombreConexion]" DelayBetweenRetries="500" DisplayName="SAP Logon" sap:VirtualizedContainerService.HintSize="334,137" sap2010:WorkflowViewState.IdRef="Logon_1" Retries="5" SAPLogonPath="[in_PathSAP]" />
           <ucas:Login SecurePassword="{x:Null}" Window="{x:Null}" Client="[in_Mandante]" DisplayName="SAP Login 'saplogon.exe  SAP'" sap:VirtualizedContainerService.HintSize="334,364" sap2010:WorkflowViewState.IdRef="Login_1" IsSecure="False" Language="[in_Lenguaje]" MultiLogonOptionToChoose="Multiple" Password="[in_Contraseña]" Timeout="5000" Username="[in_Usuario]">
             <ucas:Login.Target>
               <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="e62351e2-2bdf-4c67-b855-19fa02d0ae9d" InformativeScreenshot="0df10129d797d07ac9270d11dd4b8089" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;">
@@ -123,15 +131,6 @@
           </ucas:Login>
         </Sequence>
       </If.Then>
-      <If.Else>
-        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </Sequence>
-      </If.Else>
     </If>
     <ui:UiElementExists DisplayName="Element Exists 'StatusPane Nombre'" Exists="[AccesoDenegado]" sap:VirtualizedContainerService.HintSize="755,106" sap2010:WorkflowViewState.IdRef="UiElementExists_2">
       <ui:UiElementExists.Target>
