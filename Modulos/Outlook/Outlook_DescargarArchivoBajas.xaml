@@ -5,14 +5,15 @@
     <x:Property Name="in_NombreEmisor" Type="InArgument(x:String)" />
     <x:Property Name="in_Asunto" Type="InArgument(x:String)" />
     <x:Property Name="in_NombreArchivo" Type="InArgument(x:String)" />
+    <x:Property Name="in_To" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>637,743</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>705,732</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Outlook_LeerCorreos_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="31">
+    <scg:List x:TypeArguments="x:String" Capacity="62">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -44,6 +45,9 @@
       <x:String>UiPath.Mail</x:String>
       <x:String>UiPath.Shared.Activities</x:String>
       <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.ComponentModel</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -69,32 +73,105 @@
       <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Flowchart sap2010:Annotation.AnnotationText="Secuencia encargada de leer los mensajes del Correo y descargar los archivos Bajas para después validar sus datos en SAP" DisplayName="Outlook_DescargarArchivoBajas" sap:VirtualizedContainerService.HintSize="634,678" sap2010:WorkflowViewState.IdRef="Flowchart_1">
+  <Flowchart sap2010:Annotation.AnnotationText="Secuencia encargada de leer los mensajes del Correo y descargar los archivos Bajas para después validar sus datos en SAP" DisplayName="Outlook_DescargarArchivoBajas" sap:VirtualizedContainerService.HintSize="715,667" sap2010:WorkflowViewState.IdRef="Flowchart_1">
     <Flowchart.Variables>
       <Variable x:TypeArguments="scg:List(snm:MailMessage)" Name="ListaMensajes" />
       <Variable x:TypeArguments="x:String" Default="Archivos Bajas" Name="RutaArchivosBajas" />
+      <Variable x:TypeArguments="x:String" Name="Asunto" />
     </Flowchart.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-        <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
+        <av:Point x:Key="ShapeLocation">320,22.5</av:Point>
         <av:Size x:Key="ShapeSize">60,75</av:Size>
-        <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,149</av:PointCollection>
+        <av:PointCollection x:Key="ConnectorLocation">350,97.5 350,149</av:PointCollection>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        <x:Double x:Key="Width">681</x:Double>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <Flowchart.StartNode>
       <x:Reference>__ReferenceID1</x:Reference>
     </Flowchart.StartNode>
+    <FlowStep x:Name="__ReferenceID0">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <av:Point x:Key="ShapeLocation">250,224.5</av:Point>
+          <av:Size x:Key="ShapeSize">200,51</av:Size>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ui:ForEach x:TypeArguments="snm:MailMessage" CurrentIndex="{x:Null}" DisplayName="Recorre todos los mensajes no leídos del correo " sap:VirtualizedContainerService.HintSize="875,945" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[ListaMensajes]">
+        <ui:ForEach.Body>
+          <ActivityAction x:TypeArguments="snm:MailMessage">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="snm:MailMessage" Name="item" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Secuencia para descargar los archivos Bajas" sap:VirtualizedContainerService.HintSize="839,821" sap2010:WorkflowViewState.IdRef="Sequence_6">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="NombreEmisor" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign DisplayName="Obtiene Nombre del Emisor" sap:VirtualizedContainerService.HintSize="797,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[NombreEmisor]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[item.From.DisplayName]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign DisplayName="Obtiene asunto" sap:VirtualizedContainerService.HintSize="797,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[Asunto]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[item.Subject]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <If Condition="[NombreEmisor.ToLower.Contains(in_NombreEmisor) and Asunto.ToLower.Contains(in_Asunto)]" DisplayName="Si Nombre Emisor y Asunto coinciden con el correo que contiene el archivo Bajas" sap:VirtualizedContainerService.HintSize="797,529" sap2010:WorkflowViewState.IdRef="If_1">
+                <If.Then>
+                  <Sequence DisplayName="Descarga de archivo Bajas" sap:VirtualizedContainerService.HintSize="376,312" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:SaveMailAttachments Attachments="{x:Null}" DisplayName="Descargando archivos Bajas" ExcludeInlineAttachments="False" Filter="[in_NombreArchivo]" FolderPath="[RutaArchivosBajas]" sap:VirtualizedContainerService.HintSize="334,89" sap2010:WorkflowViewState.IdRef="SaveMailAttachments_1" Message="[item]" OverwriteExisting="False" />
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Archivo de Bajas descargado&quot;]" />
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Sequence DisplayName="Sino existen correos nuevos de RH se envía una notificación" sap:VirtualizedContainerService.HintSize="376,371" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;No se encontraron nuevos correos de RH&quot;]" />
+                    <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" ReplyTo="{x:Null}" TimeoutMS="{x:Null}" Body="No se han encontrado nuevos correos de Recursos Humanos, por ende no hay archivos de Bajas por descargar." DisplayName="Send Outlook Mail Message" sap:VirtualizedContainerService.HintSize="334,148" sap2010:WorkflowViewState.IdRef="SendOutlookMail_3" Importance="Normal" IsBodyHtml="False" IsDraft="False" Sensitivity="Normal" Subject="No hay correos nuevos" To="[in_To]">
+                      <ui:SendOutlookMail.Files>
+                        <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+                      </ui:SendOutlookMail.Files>
+                    </ui:SendOutlookMail>
+                  </Sequence>
+                </If.Else>
+              </If>
+            </Sequence>
+          </ActivityAction>
+        </ui:ForEach.Body>
+      </ui:ForEach>
+    </FlowStep>
     <FlowStep x:Name="__ReferenceID1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">200,149</av:Point>
+          <av:Point x:Key="ShapeLocation">250,149</av:Point>
           <av:Size x:Key="ShapeSize">200,22</av:Size>
-          <av:PointCollection x:Key="ConnectorLocation">300,171 300,244.5</av:PointCollection>
+          <av:PointCollection x:Key="ConnectorLocation">350,171 350,224.5</av:PointCollection>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:GetOutlookMailMessages Filter="{x:Null}" FilterByMessageIds="{x:Null}" TimeoutMS="{x:Null}" Account="[in_Correo]" DisplayName="Obtiene mensajes del Correo" GetAttachements="False" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="GetOutlookMailMessages_1" MailFolder="[in_Carpeta]" MarkAsRead="True" Messages="[ListaMensajes]" OnlyUnreadMessages="True" OrderByDate="NewestFirst" Top="100">
+      <ui:GetOutlookMailMessages Filter="{x:Null}" FilterByMessageIds="{x:Null}" TimeoutMS="{x:Null}" Account="[in_Correo]" DisplayName="Obtiene mensajes del Correo" GetAttachements="False" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="GetOutlookMailMessages_4" MailFolder="[in_Carpeta]" MarkAsRead="True" Messages="[ListaMensajes]" OnlyUnreadMessages="True" OrderByDate="NewestFirst" Top="100">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -102,68 +179,8 @@
         </sap:WorkflowViewStateService.ViewState>
       </ui:GetOutlookMailMessages>
       <FlowStep.Next>
-        <FlowStep x:Name="__ReferenceID0">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <av:Point x:Key="ShapeLocation">200,244.5</av:Point>
-              <av:Size x:Key="ShapeSize">200,51</av:Size>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <ui:ForEach x:TypeArguments="snm:MailMessage" CurrentIndex="{x:Null}" DisplayName="Recorre todos los mensajes no leídos del correo " sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[ListaMensajes]">
-            <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="snm:MailMessage">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="snm:MailMessage" Name="item" />
-                </ActivityAction.Argument>
-                <Sequence DisplayName="Secuencia para descargar los archivos Bajas" sap:VirtualizedContainerService.HintSize="797,762" sap2010:WorkflowViewState.IdRef="Sequence_6">
-                  <Sequence.Variables>
-                    <Variable x:TypeArguments="x:String" Name="NombreEmisor" />
-                    <Variable x:TypeArguments="x:String" Name="Asunto" />
-                  </Sequence.Variables>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                  <Assign DisplayName="Obtiene Nombre del Emisor" sap:VirtualizedContainerService.HintSize="755,60" sap2010:WorkflowViewState.IdRef="Assign_1">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:String">[NombreEmisor]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:String">[item.From.DisplayName]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <Assign DisplayName="Obtiene asunto" sap:VirtualizedContainerService.HintSize="755,60" sap2010:WorkflowViewState.IdRef="Assign_2">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:String">[Asunto]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:String">[item.Subject]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <If Condition="[NombreEmisor.ToLower.Contains(in_NombreEmisor) and Asunto.ToLower.Contains(in_Asunto)]" DisplayName="Si Nombre Emisor y Asunto coinciden con el correo que contiene el archivo Bajas" sap:VirtualizedContainerService.HintSize="755,470" sap2010:WorkflowViewState.IdRef="If_1">
-                    <If.Then>
-                      <Sequence DisplayName="Descarga de archivo Bajas" sap:VirtualizedContainerService.HintSize="376,312" sap2010:WorkflowViewState.IdRef="Sequence_9">
-                        <sap:WorkflowViewStateService.ViewState>
-                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                          </scg:Dictionary>
-                        </sap:WorkflowViewStateService.ViewState>
-                        <ui:SaveMailAttachments Attachments="{x:Null}" DisplayName="Descargando archivos Bajas" ExcludeInlineAttachments="False" Filter="[in_NombreArchivo]" FolderPath="[RutaArchivosBajas]" sap:VirtualizedContainerService.HintSize="334,89" sap2010:WorkflowViewState.IdRef="SaveMailAttachments_1" Message="[item]" OverwriteExisting="False" />
-                        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Archivo de Bajas descargado&quot;]" />
-                      </Sequence>
-                    </If.Then>
-                    <If.Else>
-                      <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;No se encontraron nuevos correos&quot;]" />
-                    </If.Else>
-                  </If>
-                </Sequence>
-              </ActivityAction>
-            </ui:ForEach.Body>
-          </ui:ForEach>
-        </FlowStep>
+        <x:Reference>__ReferenceID0</x:Reference>
       </FlowStep.Next>
     </FlowStep>
-    <x:Reference>__ReferenceID0</x:Reference>
   </Flowchart>
 </Activity>

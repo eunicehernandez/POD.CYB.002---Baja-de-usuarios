@@ -10,7 +10,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>727,732</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>630,732</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>SAP_TablaEmpleado_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -83,10 +83,10 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-        <av:Point x:Key="ShapeLocation">50,22.5</av:Point>
+        <av:Point x:Key="ShapeLocation">50,42.5</av:Point>
         <av:Size x:Key="ShapeSize">60,75</av:Size>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-        <av:PointCollection x:Key="ConnectorLocation">110,60 140,60 140,81 170,81</av:PointCollection>
+        <av:PointCollection x:Key="ConnectorLocation">110,80 140,80 140,81 150,81</av:PointCollection>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <Flowchart.StartNode>
@@ -95,11 +95,11 @@
     <FlowStep x:Name="__ReferenceID0">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">170,34.5</av:Point>
+          <av:Point x:Key="ShapeLocation">150,34.5</av:Point>
           <av:Size x:Key="ShapeSize">200,93</av:Size>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:WindowScope ApplicationWindow="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" Window="{x:Null}" sap2010:Annotation.AnnotationText="Módulo que ingresa a la Tabla del Empleado PA0105 " DisplayName="Attach Window 'saplogon.exe Visualizac...'" sap:VirtualizedContainerService.HintSize="434,648" sap2010:WorkflowViewState.IdRef="WindowScope_1" InformativeScreenshot="136860564841ca68f395b22559389061" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Visualización general tabla' /&gt;">
+      <ui:WindowScope ApplicationWindow="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" Window="{x:Null}" sap2010:Annotation.AnnotationText="Módulo que ingresa a la Tabla del Empleado PA0105 " DisplayName="Attach Window 'saplogon.exe Visualizac...'" sap:VirtualizedContainerService.HintSize="200,93" sap2010:WorkflowViewState.IdRef="WindowScope_1" InformativeScreenshot="136860564841ca68f395b22559389061" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='Visualización general tabla' /&gt;">
         <ui:WindowScope.Body>
           <ActivityAction x:TypeArguments="x:Object">
             <ActivityAction.Argument>

@@ -5,14 +5,15 @@
     <x:Property Name="in_Usuario" Type="InArgument(x:String)" />
     <x:Property Name="in_Contraseña" Type="InArgument(x:String)" />
     <x:Property Name="in_Lenguaje" Type="InArgument(x:String)" />
+    <x:Property Name="in_ToInicioSap" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>637,1285</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>787,1869</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>SAP_IniciarSesionSap_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="28">
+    <scg:List x:TypeArguments="x:String" Capacity="56">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -41,10 +42,13 @@
       <x:String>System.Runtime.InteropServices</x:String>
       <x:String>System.Collections.ObjectModel</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>UiPath.Mail</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="19">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="38">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -64,11 +68,13 @@
       <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
       <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
       <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Módulo que inicia sesión en el ambiente que le indiquen por el argumento" DisplayName="SAP_IniciarSesionSap" sap:VirtualizedContainerService.HintSize="526,1220" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Módulo que inicia sesión en el ambiente que le indiquen por el argumento" DisplayName="SAP_IniciarSesionSap" sap:VirtualizedContainerService.HintSize="797,1804" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Boolean" Name="ExisteSAP" />
+      <Variable x:TypeArguments="x:Boolean" Name="AccesoDenegado" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -76,7 +82,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:UiElementExists DisplayName="Element Exists 'saplogon.exe SAP'" Exists="[ExisteSAP]" sap:VirtualizedContainerService.HintSize="484,106" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+    <ui:UiElementExists DisplayName="Element Exists 'saplogon.exe SAP'" Exists="[ExisteSAP]" sap:VirtualizedContainerService.HintSize="755,106" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
       <ui:UiElementExists.Target>
         <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="8f2824b3-ae4c-418b-bcc8-0ba2ad7b57e9" InformativeScreenshot="56c61fa8d6bd1e13c1bab64722950885" Selector="&lt;wnd app='saplogon.exe' cls='#32770' title='SAP Logon 740' /&gt;">
           <ui:Target.TimeoutMS>
@@ -88,7 +94,7 @@
         </ui:Target>
       </ui:UiElementExists.Target>
     </ui:UiElementExists>
-    <If Condition="[ExisteSAP.Equals(True)]" DisplayName="Si existe la ventana principal de Sap" sap:VirtualizedContainerService.HintSize="484,820" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[ExisteSAP.Equals(True)]" DisplayName="Si existe la ventana principal de Sap" sap:VirtualizedContainerService.HintSize="755,820" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -127,6 +133,37 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="484,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Acceso correcto en &quot;+ in_Usuario]" />
+    <ui:UiElementExists DisplayName="Element Exists 'StatusPane Nombre'" Exists="[AccesoDenegado]" sap:VirtualizedContainerService.HintSize="755,106" sap2010:WorkflowViewState.IdRef="UiElementExists_2">
+      <ui:UiElementExists.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="1be46988-b5a4-4200-a623-4d28fdb064cc" InformativeScreenshot="f773f3aeb1f91fc01644516c48da4721" Selector="&lt;wnd app='saplogon.exe' cls='SAP_FRONTEND_SESSION' title='SAP' /&gt;&lt;sap id='sbar/pane[0]' text='Nombre o clave de acceso incorrectos (repita la entrada al sistema)' /&gt;">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:UiElementExists.Target>
+    </ui:UiElementExists>
+    <If Condition="[AccesoDenegado.Equals(True)]" DisplayName="Si no se puede iniciar sesión en SAP" sap:VirtualizedContainerService.HintSize="755,529" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <Sequence DisplayName="Envía notificación vía mail para su conocimiento" sap:VirtualizedContainerService.HintSize="376,371" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" ReplyTo="{x:Null}" TimeoutMS="{x:Null}" Body="Nombre o clave de acceso incorrectos (repita la entrada al sistema)" DisplayName="Send Outlook Mail Message" sap:VirtualizedContainerService.HintSize="334,148" sap2010:WorkflowViewState.IdRef="SendOutlookMail_1" Importance="Normal" IsBodyHtml="False" IsDraft="False" Sensitivity="Normal" Subject="Acceso Denegado en SAP" To="[in_ToInicioSap]">
+            <ui:SendOutlookMail.Files>
+              <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+            </ui:SendOutlookMail.Files>
+          </ui:SendOutlookMail>
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Acceso Denegado, se ha enviado un correo con notificación&quot;]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Acceso correcto en &quot;+ in_Usuario]" />
+      </If.Else>
+    </If>
   </Sequence>
 </Activity>
